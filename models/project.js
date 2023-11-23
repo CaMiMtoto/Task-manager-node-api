@@ -1,7 +1,5 @@
-// models/task.js
 const mongoose = require('mongoose');
-
-const taskSchema = new mongoose.Schema({
+const projectSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -13,11 +11,6 @@ const taskSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    priority: {
-        type: String,
-        enum: ['Low', 'Medium', 'High'],
-        default: 'Medium',
-    },
     completed: {type: Boolean, default: false},
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -25,7 +18,5 @@ const taskSchema = new mongoose.Schema({
         ref: 'User',
     },
 });
-
-const Task = mongoose.model('Task', taskSchema);
-
-module.exports = Task;
+const Project = mongoose.model('Project', projectSchema);
+module.exports = Project;

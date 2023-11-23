@@ -10,6 +10,8 @@ router.post('/',
     [
         check('title', 'Title is required').not().isEmpty(),
         check('description', 'Description must be a string').optional().isString(),
+        check('completed', 'Completed must be a boolean').optional().isBoolean(),
+        check('priority', 'Priority must be one of Low, Medium, High').isIn(['Low', 'Medium', 'High']),
     ], async (req, res) => {
         // Check for validation errors
         const errors = validationResult(req);
