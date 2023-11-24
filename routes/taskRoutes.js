@@ -39,8 +39,7 @@ router.get('/', async (req, res) => {
         const skip = (page - 1) * limit;
         const sortColumn = req.query.sortColumn ?? '_id';
         const sortOrder = req.query.sortOrder ?? 'asc';
-        const sort = {};
-        sort[sortColumn] = sortOrder;
+
 
         // get all tasks paginated from the database and populate the createdBy field with the name and email of the user
         const tasks = await Task.find()
@@ -48,9 +47,19 @@ router.get('/', async (req, res) => {
             .sort({ [sortColumn]: sortOrder })
             .skip(skip)
             .limit(limit)
-            // .sort(req.query.sortBy??'createdAt:desc')
             .exec();
-        res.send(tasks);
+        const totalTasks = await Task.countDocuments();
+        const totalPages = Math.ceil(totalTasks / limit);
+        const response = {
+            total: totalTasks,
+            page: page,
+            limit: limit,
+            totalPages: totalPages,
+            data: tasks,
+            nextPage: page < totalPages ? `/tasks?page=${page + 1}&limit=${limit}` : null,
+            prevPage: page > 1 ? `/tasks?page=${page - 1}&limit=${limit}` : null,
+        };
+        res.send(response);
     } catch (error) {
         res.status(500).send(error);
     }
