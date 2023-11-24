@@ -4,8 +4,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const taskRoutes = require('./routes/taskRoutes');
 const authRoutes = require('./routes/authRoutes');
-
+var cors = require('cors')
 const app = express();
+
+app.use(cors());
+
 const PORT = process.env.PORT || 3000;
 
 mongoose.connect('mongodb://localhost:27017/task-manager')

@@ -18,12 +18,18 @@ const taskSchema = new mongoose.Schema({
         enum: ['Low', 'Medium', 'High'],
         default: 'Medium',
     },
-    completed: {type: Boolean, default: false},
+    completed: { type: Boolean, default: false },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User',
     },
+    projects: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project'
+        }
+    ]
 });
 
 const Task = mongoose.model('Task', taskSchema);
