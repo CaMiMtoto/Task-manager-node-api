@@ -138,4 +138,18 @@ router.patch('/:id/toggle-completed', async (req, res) => {
     }
 });
 
+// assign a task to a user
+
+router.patch('/:id/assign', async (req, res) => {
+    try {
+        const task = await Task.findById(req.params.id);
+        task.assignedTo = req.body.assignedTo;
+        await task.save();
+        res.send(task);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+
 module.exports = router;

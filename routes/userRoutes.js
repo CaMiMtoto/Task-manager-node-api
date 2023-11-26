@@ -3,6 +3,7 @@ const router = express.Router();
 const _ = require('lodash');
 const { check, validationResult } = require('express-validator');
 const authMiddleware = require('../middleware/authMiddleware');
+const User = require('../models/user');
 
 router.post('/', authMiddleware, [
     check('name', 'Name is required').not().isEmpty(),
@@ -64,5 +65,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
         res.status(500).send(error);
     }
 });
+
+
 
 module.exports = router;
