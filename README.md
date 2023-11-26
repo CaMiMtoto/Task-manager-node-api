@@ -9,7 +9,7 @@ logout, create, read, update and delete tasks.it allows also to assign tasks to 
 
 1. Clone the repo
    ```sh
-   git clone 
+   git clone https://github.com/CaMiMtoto/Task-manager-node-api.git
     ```
 2. Install NPM packages in the root folder
    ```sh
