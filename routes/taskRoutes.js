@@ -32,7 +32,7 @@ router.post('/',
 );
 
 // Read All Tasks
-router.get('/', async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
     try {
         const page = parseInt(req.query.page ?? 1);
         const limit = parseInt(req.query.limit ?? 10);
@@ -42,20 +42,21 @@ router.get('/', async (req, res) => {
 
 
         // get all tasks paginated from the database and populate the createdBy field with the name and email of the user
-        const tasks = await Task.find()
+
+        const tasks = await Task.find({ createdBy: req.user._id })
             .populate('createdBy', '_id name email phone')
             .sort({ [sortColumn]: sortOrder })
             .skip(skip)
             .limit(limit)
             .exec();
-        const totalTasks = await Task.countDocuments();
+        const totalTasks = await Task.countDocuments({ createdBy: req.user._id });
         const totalPages = Math.ceil(totalTasks / limit);
         const response = {
             total: totalTasks,
             page: page,
             limit: limit,
             totalPages: totalPages,
-            data: tasks,
+            results: tasks,
             nextPage: page < totalPages ? `/tasks?page=${page + 1}&limit=${limit}` : null,
             prevPage: page > 1 ? `/tasks?page=${page - 1}&limit=${limit}` : null,
         };

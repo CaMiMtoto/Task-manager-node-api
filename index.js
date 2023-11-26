@@ -1,4 +1,4 @@
-// index.js
+require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -11,7 +11,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect('mongodb://localhost:27017/task-manager')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/task-manager-api')
     .then(() => {
         console.log('Connected to database');
     })
