@@ -3,7 +3,7 @@ const express = require('express');
 const Task = require('../models/task');
 const authMiddleware = require('../middleware/authMiddleware');
 
-const { check, validationResult } = require('express-validator');
+const {check, validationResult} = require('express-validator');
 const router = express.Router();
 router.post('/',
     authMiddleware,
@@ -16,7 +16,7 @@ router.post('/',
         // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({errors: errors.array()});
         }
         try {
             const task = new Task({
@@ -43,13 +43,13 @@ router.get('/', authMiddleware, async (req, res) => {
 
         // get all tasks paginated from the database and populate the createdBy field with the name and email of the user
 
-        const tasks = await Task.find({ createdBy: req.user._id })
+        const tasks = await Task.find({createdBy: req.user._id})
             .populate('createdBy', '_id name email phone')
-            .sort({ [sortColumn]: sortOrder })
+            .sort({[sortColumn]: sortOrder})
             .skip(skip)
             .limit(limit)
             .exec();
-        const totalTasks = await Task.countDocuments({ createdBy: req.user._id });
+        const totalTasks = await Task.countDocuments({createdBy: req.user._id});
         const totalPages = Math.ceil(totalTasks / limit);
         const response = {
             total: totalTasks,
@@ -92,7 +92,7 @@ router.put('/:id',
         // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({errors: errors.array()});
         }
 
         const updates = Object.keys(req.body);
@@ -100,11 +100,11 @@ router.put('/:id',
         const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
         if (!isValidOperation) {
-            return res.status(400).send({ error: 'Invalid updates!' });
+            return res.status(400).send({error: 'Invalid updates!'});
         }
 
         try {
-            const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+            const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
             if (!task) {
                 return res.status(404).send();
             }

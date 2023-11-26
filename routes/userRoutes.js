@@ -28,7 +28,9 @@ router.get('/', async (req, res) => {
     const users = await User.find();
     // pick only the required fields
     const usersResponse = users.map(user => _.pick(user, ['_id', 'name', 'email', 'phone']));
-    res.send(usersResponse);
+    res.send({
+        results: usersResponse
+    });
 });
 
 router.get('/:id', async (req, res) => {
